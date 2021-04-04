@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# PROVIDE: bitwardenrs
+# REQUIRE: LOGIN DAEMON NETWORKING
+# KEYWORD: jail rust
+
+# Enable this script by adding:
+# bitwardenrs_enable="YES"
+# ... to /etc/rc.conf
+
+. /etc/rc.subr
+
+name="bitwardenrs"
+rcvar="bitwardenrs_enable"
+bitwardenrs_chdir=/home/bitwardenrs/bitwarden_rs_dist
+# This is the tool init launches
+command="/usr/sbin/daemon"
+
+pidfile="/var/run/\${name}.pid"
+
+# This is the tool daemon launches
+task="./bitwarden_rs"
+procname="/bin/bash"
+
+command_args="-u bitwardenrs -p \${pidfile} \${task}"
+
+load_rc_config $name
+run_rc_command "\$1"
